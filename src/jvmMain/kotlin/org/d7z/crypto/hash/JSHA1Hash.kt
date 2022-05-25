@@ -12,7 +12,7 @@ import java.security.NoSuchAlgorithmException
 class JSHA1Hash : IHash {
     init {
         try {
-            MessageDigest.getInstance("sha1")
+            MessageDigest.getInstance("sha-1")
         } catch (e: NoSuchAlgorithmException) {
             throw AlgorithmNotSupportException("SHA1/Java", "Java 端无法创建对应实现", e)
         }

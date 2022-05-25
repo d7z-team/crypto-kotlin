@@ -3,6 +3,11 @@ package org.d7z.crypto.hash
 import org.d7z.crypto.utils.IStreamTransport
 import org.d7z.crypto.utils.bufferEach
 
+/**
+ * SHA-1 的 Kotlin Common 实现
+ *
+ * 注意，SHA-1 已被证明不安全，请谨慎使用
+ */
 class SHA1Hash : IHash {
     private val staticData = intArrayOf(
         0x67452301, 0xefcdab89.toInt(), 0x98badcfe.toInt(), 0x10325476, 0xc3d2e1f0.toInt()
