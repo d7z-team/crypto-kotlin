@@ -5,7 +5,6 @@ import org.d7z.crypto.utils.IStreamTransport
 import org.d7z.crypto.utils.bufferEach
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
-import java.security.Security
 
 /**
  * MD5 Java 后端实现
@@ -19,7 +18,7 @@ class JSHA1Hash : IHash {
         }
     }
 
-    override fun loadHash(source: IStreamTransport): ByteArray {
+    override fun digest(source: IStreamTransport): ByteArray {
         val messageDigest = MessageDigest.getInstance("sha-1")
         messageDigest.reset()
         source.bufferEach { buffer, size ->

@@ -34,7 +34,7 @@ class MD5Hash : IHash {
         }
     }
 
-    override fun loadHash(source: IStreamTransport): ByteArray {
+    override fun digest(source: IStreamTransport): ByteArray {
         val result = constData.copyOf()
         var sourceSize: Long = 0
         val group = LongArray(16)
@@ -51,14 +51,15 @@ class MD5Hash : IHash {
             }
         }
         val endSize = (sourceSize % 64).toInt()
+        endBuffer[endSize] = (1 shl 7).toByte()
         if (endSize < 56) {
-            endBuffer[endSize] = (1 shl 7).toByte()
             for (i in 1 until 56 - endSize) {
                 endBuffer[endSize + i] = 0
             }
         } else {
-            endBuffer[endSize] = (1 shl 7).toByte()
-            for (i in endSize + 1..63) endBuffer[i] = 0
+            for (i in endSize + 1..63) {
+                endBuffer[i] = 0
+            }
             wrapGroup(endBuffer, group)
             transfer(group, result) // 处理分组
             for (i in 0..55) endBuffer[i] = 0

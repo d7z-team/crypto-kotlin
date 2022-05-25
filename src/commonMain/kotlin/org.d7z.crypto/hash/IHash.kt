@@ -12,7 +12,7 @@ interface IHash {
      * @param source IStreamTransport 原始数据
      * @return ByteArray 计算结果
      */
-    fun loadHash(source: IStreamTransport): ByteArray
+    fun digest(source: IStreamTransport): ByteArray
 
     /**
      * 计算哈希值并转换成16进制串
@@ -20,8 +20,8 @@ interface IHash {
      * @param source IStreamTransport 原始数据
      * @return String 计算结果
      */
-    fun loadHashToHexText(source: IStreamTransport): String {
-        val bytes = loadHash(source)
+    fun digestHexText(source: IStreamTransport): String {
+        val bytes = digest(source)
         val hexChars = CharArray(bytes.size * 2)
         for (j in bytes.indices) {
             val value = (bytes[j] and 0xFF.toByte()).toUByte().toInt()

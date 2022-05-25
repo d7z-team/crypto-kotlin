@@ -18,7 +18,7 @@ class JMD5Hash : IHash {
         }
     }
 
-    override fun loadHash(source: IStreamTransport): ByteArray {
+    override fun digest(source: IStreamTransport): ByteArray {
         val messageDigest = MessageDigest.getInstance("MD5")
         source.bufferEach { buffer, size ->
             messageDigest.update(buffer, 0, size)
