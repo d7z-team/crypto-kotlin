@@ -17,8 +17,9 @@ fun IStreamTransport.bufferEach(bufferSize: Int = 1024, func: (buf: ByteArray, s
             val read = read(buffer, readSize, bufferSize - readSize)
             if (read == -1) {
                 break
+            } else {
+                readSize += read
             }
-            readSize += read
         }
         if (readSize == -1) {
             break

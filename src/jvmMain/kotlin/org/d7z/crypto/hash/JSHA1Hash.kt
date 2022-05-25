@@ -5,6 +5,7 @@ import org.d7z.crypto.utils.IStreamTransport
 import org.d7z.crypto.utils.bufferEach
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
+import java.security.Security
 
 /**
  * MD5 Java 后端实现
@@ -12,14 +13,15 @@ import java.security.NoSuchAlgorithmException
 class JSHA1Hash : IHash {
     init {
         try {
-            MessageDigest.getInstance("SHA1")
+            MessageDigest.getInstance("sha1")
         } catch (e: NoSuchAlgorithmException) {
             throw AlgorithmNotSupportException("SHA1/Java", "Java 端无法创建对应实现", e)
         }
     }
 
     override fun loadHash(source: IStreamTransport): ByteArray {
-        val messageDigest = MessageDigest.getInstance("SHA1")
+        val messageDigest = MessageDigest.getInstance("sha-1")
+        messageDigest.reset()
         source.bufferEach { buffer, size ->
             messageDigest.update(buffer, 0, size)
         }
