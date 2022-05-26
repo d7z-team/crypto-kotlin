@@ -9,9 +9,9 @@ import org.d7z.crypto.utils.bufferEach
  * 注意，SHA-1 已被证明不安全，请谨慎使用
  */
 class SHA1Hash : IHash {
-    private val staticData = intArrayOf(
-        0x67452301, 0xefcdab89.toInt(), 0x98badcfe.toInt(), 0x10325476, 0xc3d2e1f0.toInt()
-    )
+    private val staticData = longArrayOf(
+        0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476, 0xc3d2e1f0
+    ).map { it.toInt() }.toIntArray()
 
     override fun digest(source: IStreamTransport): ByteArray {
         // 摘要数据存储数组
@@ -39,28 +39,17 @@ class SHA1Hash : IHash {
         // 判断末尾是否有足够空间填充数据集大小
         if (endSize < 56) {
             // 清空
-            for (i in 1 until 56 - endSize) {
-                endBuffer[endSize + i] = 0
-            }
+            endBuffer.fill(0, endSize + 1, 56)
         } else {
-            for (i in endSize + 1..63) {
-                endBuffer[i] = 0
-            }
+            endBuffer.fill(0, endSize + 1, 64)
             fillBlock(endBuffer, workBlock)
             updateBlock(workBlock, digestInt, tempDigestInt)
-            for (i in 0..55) endBuffer[i] = 0
+            endBuffer.fill(0, 0, 56)
         }
         val len = sourceSize * 8
-        byteArrayOf(
-            (len shr 56).toByte(),
-            (len shr 48 and 0xFFL).toByte(),
-            (len shr 40 and 0xFFL).toByte(),
-            (len shr 32 and 0xFFL).toByte(),
-            (len shr 24 and 0xFFL).toByte(),
-            (len shr 16 and 0xFFL).toByte(),
-            (len shr 8 and 0xFFL).toByte(),
-            (len and 0xFFL).toByte()
-        ).copyInto(endBuffer, 56)
+        for (i in 0..7) {
+            endBuffer[endBuffer.size - 1 - i] = (len ushr 8 * i and 0xFFL).toByte()
+        }
         fillBlock(endBuffer, workBlock)
         updateBlock(workBlock, digestInt, tempDigestInt)
 
