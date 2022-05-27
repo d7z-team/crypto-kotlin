@@ -27,7 +27,7 @@ class SHA1Hash : IHash {
             sourceSize += size
             if (size == 64) {
                 fillBlock(buf, workBlock)
-                updateBlock(workBlock, digestInt, tempDigestInt)
+                iterate(workBlock, digestInt, tempDigestInt)
             } else {
                 // 不可完整切片的数据,为末尾数据
                 buf.copyInto(endBuffer, 0, 0, size)
@@ -43,7 +43,7 @@ class SHA1Hash : IHash {
         } else {
             endBuffer.fill(0, endSize + 1, 64)
             fillBlock(endBuffer, workBlock)
-            updateBlock(workBlock, digestInt, tempDigestInt)
+            iterate(workBlock, digestInt, tempDigestInt)
             endBuffer.fill(0, 0, 56)
         }
         val len = sourceSize * 8
@@ -51,7 +51,7 @@ class SHA1Hash : IHash {
             endBuffer[endBuffer.size - 1 - i] = (len ushr 8 * i and 0xFFL).toByte()
         }
         fillBlock(endBuffer, workBlock)
-        updateBlock(workBlock, digestInt, tempDigestInt)
+        iterate(workBlock, digestInt, tempDigestInt)
 
         val digest = ByteArray(20)
         for (i in digestInt.indices) {
@@ -63,7 +63,7 @@ class SHA1Hash : IHash {
         return digest
     }
 
-    private fun updateBlock(workBlock: IntArray, digestInt: IntArray, tempDigestInt: IntArray) {
+    private fun iterate(workBlock: IntArray, digestInt: IntArray, tempDigestInt: IntArray) {
         digestInt.copyInto(tempDigestInt)
         for (j in 0..19) {
             val tmp = f4(tempDigestInt[0], 5) +

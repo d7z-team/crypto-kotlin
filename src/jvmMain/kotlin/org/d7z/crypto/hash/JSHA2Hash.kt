@@ -10,14 +10,14 @@ import java.security.NoSuchAlgorithmException
 /**
  * MD5 Java 后端实现
  */
-class JSHA2Hash(private val shA2Type: SHA2Type) : IHash {
-    private val algorithm = when (shA2Type) {
+class JSHA2Hash(type: SHA2Type) : IHash {
+    private val algorithm = when (type) {
         SHA2Type.SHA_224 -> "SHA-224"
         SHA2Type.SHA_256 -> "SHA-256"
-        SHA2Type.SHA_512_224 -> TODO()
-        SHA2Type.SHA_512_256 -> TODO()
-        SHA2Type.SHA_384 -> TODO()
-        SHA2Type.SHA_512 -> TODO()
+        SHA2Type.SHA_384 -> "SHA-384"
+        SHA2Type.SHA_512 -> "SHA-512"
+        SHA2Type.SHA_512_224 -> "SHA-512/224"
+        SHA2Type.SHA_512_256 -> "SHA-512/256"
     }
 
     init {

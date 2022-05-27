@@ -43,7 +43,7 @@ class SHA2V1Hash(private val type: SHA2V1Type) : IHash {
 
     override fun digest(source: IStreamTransport): ByteArray {
         // 摘要数据存储数组
-        val hs = type.hashes.copyOf()
+        val digestInt = type.hashes.copyOf()
         // 计算过程中的临时数据存储数组
         val workBlock = IntArray(64)
         val endBuffer = ByteArray(64)
@@ -53,7 +53,7 @@ class SHA2V1Hash(private val type: SHA2V1Type) : IHash {
             sourceSize += size
             if (size == 64) {
                 fillBlock(buf, workBlock)
-                iterate(workBlock, hs)
+                iterate(workBlock, digestInt)
             } else {
                 // 不可完整切片的数据,为末尾数据
                 buf.copyInto(endBuffer, 0, 0, size)
@@ -62,28 +62,23 @@ class SHA2V1Hash(private val type: SHA2V1Type) : IHash {
         val endSize = (sourceSize % 64).toInt()
         // 补1操作
         endBuffer[endSize] = 0x80.toByte()
-        // 判断末尾是否有足够空间填充数据集大小
-        if (endSize < 56) {
-            // 清空
-            endBuffer.fill(0, endSize + 1, 56)
-        } else {
-            endBuffer.fill(0, endSize + 1, 64)
+        if (endSize >= 56) {
             fillBlock(endBuffer, workBlock)
-            iterate(workBlock, hs)
-            endBuffer.fill(0, 0, 56)
+            iterate(workBlock, digestInt)
+            endBuffer.fill(0)
         }
         val len = sourceSize * 8
         for (i in 0..7) {
             endBuffer[endBuffer.size - 1 - i] = (len ushr 8 * i and 0xFFL).toByte()
         }
         fillBlock(endBuffer, workBlock)
-        iterate(workBlock, hs)
+        iterate(workBlock, digestInt)
 
-        val digest = ByteArray(type.size)
-        for (i in 0 until digest.size / 4) {
-            intToBytes(hs[i]).copyInto(digest, 4 * i, 0, 4)
+        val digest = ByteArray(digestInt.size * 4)
+        for (i in digestInt.indices) {
+            intToBytes(digestInt[i]).copyInto(digest, 4 * i, 0, 4)
         }
-        return digest
+        return digest.copyOf(type.size)
     }
 
     private fun intToBytes(i: Int): ByteArray {
@@ -94,11 +89,6 @@ class SHA2V1Hash(private val type: SHA2V1Type) : IHash {
         return b
     }
 
-    /**
-     * Sets up the words. The first 16 words are filled with
-     * a copy of the 64 bytes currently being processed in the
-     * hash loop. The 64 - 16 words depend on these values.
-     */
     private fun fillBlock(container: ByteArray, workBlock: IntArray) {
         for (j in 0..15) {
             workBlock[j] = 0
@@ -117,40 +107,32 @@ class SHA2V1Hash(private val type: SHA2V1Type) : IHash {
         }
     }
 
-    /**
-     * The iteration is called 64 times for every block to be encrypted.
-     * It updates the registers which later are used to generate the
-     * message hash.
-     *
-     * @param words     The words used represented by an int array of size 64.
-     */
     private fun iterate(words: IntArray, hs: IntArray) {
-        // The registers used represented by an int array of size 8.
-        val registers = hs.copyOf(8)
+        val tempDigestInt = hs.copyOf(8)
         for (j in 0..63) {
-            val S0 = registers[0].rotateRight(2) xor
-                registers[0].rotateRight(13) xor
-                registers[0].rotateRight(22)
-            val maj = (registers[0] and registers[1]) xor
-                (registers[0] and registers[2]) xor
-                (registers[1] and registers[2])
-            val temp2 = S0 + maj
-            val S1 = registers[4].rotateRight(6) xor
-                registers[4].rotateRight(11) xor
-                registers[4].rotateRight(25)
-            val ch = (registers[4] and registers[5]) xor (registers[4].inv() and registers[6])
-            val temp1 = registers[7] + S1 + ch + constK[j] + words[j]
-            registers[7] = registers[6]
-            registers[6] = registers[5]
-            registers[5] = registers[4]
-            registers[4] = registers[3] + temp1
-            registers[3] = registers[2]
-            registers[2] = registers[1]
-            registers[1] = registers[0]
-            registers[0] = temp1 + temp2
+            val tmpS0 = tempDigestInt[0].rotateRight(2) xor
+                tempDigestInt[0].rotateRight(13) xor
+                tempDigestInt[0].rotateRight(22)
+            val maj = (tempDigestInt[0] and tempDigestInt[1]) xor
+                (tempDigestInt[0] and tempDigestInt[2]) xor
+                (tempDigestInt[1] and tempDigestInt[2])
+            val temp2 = tmpS0 + maj
+            val tmpS1 = tempDigestInt[4].rotateRight(6) xor
+                tempDigestInt[4].rotateRight(11) xor
+                tempDigestInt[4].rotateRight(25)
+            val ch = (tempDigestInt[4] and tempDigestInt[5]) xor (tempDigestInt[4].inv() and tempDigestInt[6])
+            val temp1 = tempDigestInt[7] + tmpS1 + ch + constK[j] + words[j]
+            tempDigestInt[7] = tempDigestInt[6]
+            tempDigestInt[6] = tempDigestInt[5]
+            tempDigestInt[5] = tempDigestInt[4]
+            tempDigestInt[4] = tempDigestInt[3] + temp1
+            tempDigestInt[3] = tempDigestInt[2]
+            tempDigestInt[2] = tempDigestInt[1]
+            tempDigestInt[1] = tempDigestInt[0]
+            tempDigestInt[0] = temp1 + temp2
         }
         for (j in 0..7) {
-            hs[j] += registers[j]
+            hs[j] += tempDigestInt[j]
         }
     }
 }
