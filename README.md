@@ -9,7 +9,8 @@
 
 ## 支持的算法
 
-### 摘要算法
+<details>
+  <summary><b>摘要算法</b></summary>
 
 - MD5
 - SHA-1
@@ -21,9 +22,22 @@
   - SHA-512/224
   - SHA-512/256
 - SHA-3
+  - KECCAK-224
+  - KECCAK-256
+  - KECCAK-384
+  - KECCAK-512
+  - SHA3-224
+  - SHA3-256
+  - SHA3-384
+  - SHA3-512
+  - SHAKE-128
+  - SHAKE-256
 - Blake
 - Blake2
 - Blake3
+- SM3
+
+</details>
 
 ## 对称加密算法
 

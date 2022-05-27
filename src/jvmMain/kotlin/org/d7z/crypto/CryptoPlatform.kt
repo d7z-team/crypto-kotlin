@@ -2,6 +2,7 @@ package org.d7z.crypto
 
 import org.d7z.crypto.factory.IMessageDigest
 import org.d7z.crypto.hash.IHash
+import org.d7z.crypto.hash.JCRC32Hash
 import org.d7z.crypto.hash.JMD5Hash
 import org.d7z.crypto.hash.JSHA1Hash
 import org.d7z.crypto.hash.JSHA2Hash
@@ -14,6 +15,7 @@ actual object CryptoPlatform {
     internal class JMessageDigest : IMessageDigest {
         override fun getInstance(type: MessageDigestType): IHash {
             return when (type) {
+                MessageDigestType.CRC32 -> JCRC32Hash()
                 MessageDigestType.MD5 -> JMD5Hash()
                 MessageDigestType.SHA_1 -> JSHA1Hash()
                 MessageDigestType.SHA_2_224 -> JSHA2Hash(SHA2Type.SHA_224)

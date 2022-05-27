@@ -1,5 +1,6 @@
 package org.d7z.crypto.type
 
+import org.d7z.crypto.hash.CRC32Hash
 import org.d7z.crypto.hash.IHash
 import org.d7z.crypto.hash.MD5Hash
 import org.d7z.crypto.hash.SHA1Hash
@@ -7,6 +8,7 @@ import org.d7z.crypto.hash.SHA2Hash
 import org.d7z.crypto.hash.SHA3Hash
 
 enum class MessageDigestType(val callback: IHash, vararg val alias: String) {
+    CRC32(CRC32Hash()),
     MD5(MD5Hash()),
     SHA_1(SHA1Hash(), "sha1"),
     SHA_2_224(SHA2Hash(SHA2Type.SHA_224), "sha-256"),
