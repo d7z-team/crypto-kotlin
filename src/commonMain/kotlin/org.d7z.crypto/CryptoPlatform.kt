@@ -1,5 +1,7 @@
 package org.d7z.crypto
 
-expect class CryptoPlatform {
-    val name: String
+import org.d7z.crypto.factory.IMessageDigest
+
+expect object CryptoPlatform {
+    val messageDigest: IMessageDigest
 }

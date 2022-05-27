@@ -3,13 +3,13 @@ package org.d7z.crypto
 import org.d7z.crypto.hash.JMD5Hash
 import org.d7z.crypto.hash.JSHA1Hash
 import org.d7z.crypto.hash.JSHA2Hash
+import org.d7z.crypto.hash.JSHA3Hash
 import org.d7z.crypto.hash.MD5Hash
 import org.d7z.crypto.hash.SHA1Hash
 import org.d7z.crypto.hash.SHA2Hash
-import org.d7z.crypto.hash.sha2.SHA2V1Hash
-import org.d7z.crypto.hash.sha2.SHA2V1Hash.SHA2V1Type
-import org.d7z.crypto.hash.sha2.SHA2V2Hash
+import org.d7z.crypto.hash.SHA3Hash
 import org.d7z.crypto.type.SHA2Type
+import org.d7z.crypto.type.SHA3Type
 import org.d7z.crypto.utils.streamTransport
 import org.junit.jupiter.api.Test
 import java.math.BigInteger
@@ -19,22 +19,29 @@ class TestOne {
     @Test
     fun test() {
 
-        val data = "Hello World".toByteArray(Charsets.US_ASCII)
+        val data = "The quick brown fox jumps over the lazy dog.".toByteArray(Charsets.US_ASCII)
         println("MD5")
         println(BigInteger(1, JMD5Hash().digest(data.streamTransport())).toString(16))
         println(BigInteger(1, MD5Hash().digest(data.streamTransport())).toString(16))
         println("sha-1")
         println(BigInteger(1, JSHA1Hash().digest(data.streamTransport())).toString(16))
         println(BigInteger(1, SHA1Hash().digest(data.streamTransport())).toString(16))
-        println("sha-224")
-        println(BigInteger(1, JSHA2Hash(SHA2Type.SHA_224).digest(data.streamTransport())).toString(16))
-        println(BigInteger(1, SHA2V1Hash(SHA2V1Type.SHA_224).digest(data.streamTransport())).toString(16))
-        println("sha-256")
-        println(BigInteger(1, JSHA2Hash(SHA2Type.SHA_256).digest(data.streamTransport())).toString(16))
-        println(BigInteger(1, SHA2V1Hash(SHA2V1Type.SHA_256).digest(data.streamTransport())).toString(16))
-        println("sha-512")
-        println(BigInteger(1, JSHA2Hash(SHA2Type.SHA_512).digest(data.streamTransport())).toString(16))
-        println(BigInteger(1, SHA2V2Hash(SHA2V2Hash.SHA2V2Type.SHA_512).digest(data.streamTransport())).toString(16))
+        println("sha-2")
+        for (value in SHA2Type.values()) {
+            println(value)
+            println(BigInteger(1, JSHA2Hash(value).digest(data.streamTransport())).toString(16))
+            println(BigInteger(1, SHA2Hash(value).digest(data.streamTransport())).toString(16))
+        }
+        println("sha-3")
+        for (value in SHA3Type.values()) {
+            println(value)
+            try {
+                println(BigInteger(1, JSHA3Hash(value).digest(data.streamTransport())).toString(16))
+            } catch (e: Exception) {
+                println("$value 错误！ ${e.message}")
+            }
+            println(BigInteger(1, SHA3Hash(value).digest(data.streamTransport())).toString(16))
+        }
     }
 
     @Test

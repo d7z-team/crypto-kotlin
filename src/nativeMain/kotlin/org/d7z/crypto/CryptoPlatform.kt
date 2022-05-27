@@ -1,5 +1,8 @@
 package org.d7z.crypto
 
-actual class CryptoPlatform {
-    actual val name: String = "kotlin/native"
+import org.d7z.crypto.factory.IMessageDigest
+
+actual object CryptoPlatform {
+    actual val messageDigest: IMessageDigest
+        get() = throw AlgorithmInitializationException("todo", "native 平台暂无任何本地实现")
 }
