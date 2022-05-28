@@ -11,41 +11,43 @@
 
 ## 支持的算法
 
+> 标记 <input type="checkbox" checked disabled> 表示已实现
+
 <details>
   <summary><b>摘要算法</b></summary>
 
-- MD5
-- SHA-1
-- SHA-2
-  - SHA-224
-  - SHA-256
-  - SHA-384
-  - SHA-512
-  - SHA-512/224
-  - SHA-512/256
-- SHA-3
-  - KECCAK-224
-  - KECCAK-256
-  - KECCAK-384
-  - KECCAK-512
-  - SHA3-224
-  - SHA3-256
-  - SHA3-384
-  - SHA3-512
-  - SHAKE-128
-  - SHAKE-256
-- Blake
-- Blake2
-- Blake3
-- SM3
-- CRC32
+- [X] MD5
+- [X] SHA-1
+- [X] SHA-2
+  - [X] SHA-224
+  - [X] SHA-256
+  - [X] SHA-384
+  - [X] SHA-512
+  - [X] SHA-512/224
+  - [X] SHA-512/256
+- [X] SHA-3
+  - [X] KECCAK-224
+  - [X] KECCAK-256
+  - [X] KECCAK-384
+  - [X] KECCAK-512
+  - [X] SHA3-224
+  - [X] SHA3-256
+  - [X] SHA3-384
+  - [X] SHA3-512
+  - [X] SHAKE-128
+  - [X] SHAKE-256
+- [ ] Blake
+- [ ] Blake2
+- [ ] Blake3
+- [ ] SM3
+- [X] CRC32
 
 </details>
 
 ## 对称加密算法
 
-- AES
-- ChaCha20
+- [ ] AES
+- [ ] ChaCha20
 
 ## 快速开始
 
