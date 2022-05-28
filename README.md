@@ -11,8 +11,6 @@
 
 ## 支持的算法
 
-> 标记 <input type="checkbox" checked disabled> 表示已实现
-
 <details>
   <summary><b>摘要算法</b></summary>
 
@@ -44,14 +42,19 @@
 
 </details>
 
-## 对称加密算法
-
+<details>
+  <summary><b>对称加密算法</b></summary>
 - [ ] AES
 - [ ] ChaCha20
+</details>
 
 ## 快速开始
 
+// TODO
+
 ## 更新日志
+
+// TODO
 
 ## 致谢
 
