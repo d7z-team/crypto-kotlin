@@ -7,7 +7,8 @@
 - 使用简单
 - 所有算法带有平台无关实现
 
-**注意**：如果你的项目只运行在 Java 环境下，请使用 [Legion of the Bouncy Castle](https://www.bouncycastle.org/) 项目，他能提供更好的性能和安全性。
+**注意**：如果你的项目只运行在 Java 环境下，请使用 [Legion of the Bouncy Castle](https://www.bouncycastle.org/)
+项目，他能提供更好的性能和安全性。所有平台无关实现未经过安全审核和性能优化，请谨慎使用。
 
 ## 支持的算法
 
@@ -44,10 +45,25 @@
 
 <details>
   <summary><b>对称加密算法</b></summary>
+
 - [ ] AES
 - [ ] ChaCha20
+
 </details>
 
+
+<details>
+  <summary><b>非对称加密算法</b></summary>
+
+- [ ] RSA
+- [ ] P-256
+- [ ] P-384
+- [ ] P-521
+- [ ] Curve25519
+- [ ] Curve448
+- [ ] SM2
+
+</details>
 ## 快速开始
 
 // TODO
