@@ -47,6 +47,18 @@
   <summary><b>对称加密算法</b></summary>
 
 - [ ] AES
+  - [ ] AES-ECB
+  - [ ] AES-CBC
+  - [ ] AES-CTR
+  - [ ] AES-CFB
+  - [ ] AES-OFB
+  - [ ] AES-XTS
+  - [ ] AES-CCM
+  - [ ] AES-GCM
+  - [ ] AES-CWC
+  - [ ] AES-EAX
+  - [ ] AES-IAPM
+  - [ ] AES-OCB
 - [ ] ChaCha20
 
 </details>
@@ -64,6 +76,9 @@
 - [ ] SM2
 
 </details>
+
+## 工具包
+
 ## 快速开始
 
 // TODO

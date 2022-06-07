@@ -4,6 +4,9 @@ import org.d7z.crypto.factory.IMessageDigest
 import org.d7z.crypto.hash.IHash
 import org.d7z.crypto.type.MessageDigestType
 
+/**
+ * 摘要算法
+ */
 object MessageDigest : IMessageDigest {
     private val algorithms: Map<String, MessageDigestType> = MessageDigestType.values().map { type ->
         mutableSetOf<String>().apply {
